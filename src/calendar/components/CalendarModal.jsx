@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { addHours, differenceInSeconds } from "date-fns";
+import { addHours } from "date-fns";
 import Modal from "react-modal";
 import { useFormik } from "formik";
 import DatePicker from "react-datepicker";
@@ -24,7 +24,8 @@ Modal.setAppElement("#root");
 
 export const CalendarModal = () => {
   const { closeDateModal, isDateModalOpen } = useUiStore();
-  const { activeEvent, startSavingEvent } = useCalendarStore();
+  const { activeEvent, startSavingEvent, startDeletingEvent } =
+    useCalendarStore();
   const [errorDate, setErrorDate] = useState(false);
 
   const {
@@ -76,18 +77,20 @@ export const CalendarModal = () => {
     setErrorDate(true);
   }
   useEffect(() => {
-    if (activeEvent !== null && activeEvent !== undefined) {
+    if (activeEvent !== null) {
       setFormikState({
         values: {
-          ["start"]: activeEvent.start,
-          ["end"]: activeEvent.end,
-          ["title"]: activeEvent.title,
-          ["notes"]: activeEvent.notes,
+          ...activeEvent,
         },
       });
     }
   }, [activeEvent]);
 
+  const onDeleteEvent = () => {
+    startDeletingEvent();
+    closeDateModal();
+    Swal.fire("Event deleted!", "Your event was removed", "success");
+  };
   return (
     <Modal
       isOpen={isDateModalOpen}
@@ -97,7 +100,19 @@ export const CalendarModal = () => {
       overlayClassName="modal-fondo"
       closeTimeoutMS={200}
     >
-      <h1>New event</h1>
+      <div className="d-flex justify-content-between">
+        <h1>New event</h1>
+        {activeEvent?._id && (
+          <button
+            onClick={onDeleteEvent}
+            className="btn btn-outline-danger btn-block p-1 d-flex align-items-center "
+          >
+            <i className="fa-solid fa-trash-can fs-4 me-2"></i>
+            <span>Delete</span>
+          </button>
+        )}
+      </div>
+
       <hr />
       <form className="container" onSubmit={handleSubmit}>
         <div className="form-group mb-2 d-flex flex-column">

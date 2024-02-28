@@ -30,7 +30,6 @@ export const CalendarPage = () => {
   const { openDateModal } = useUiStore();
 
   const { events, setActiveEvent } = useCalendarStore();
-  console.log(events);
 
   const onDoubleClick = () => openDateModal();
 
