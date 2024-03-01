@@ -70,24 +70,19 @@ export const useAuthStore = () => {
     const token = localStorage.getItem("jwt-token");
     if (!token) return dispatch(onLogout("Token expired"));
 
-    try {
-      const request = await fetch(
-        `${import.meta.env.VITE_API_URL}/auth/renew`,
-        {
-          method: "GET",
-          headers: {
-            "Content-type": "application/json",
-            "jwt-token": token,
-          },
-        }
-      );
-      if (request.status === 200) {
-        const response = await request.json();
-        localStorage.setItem("jwt-token", response.msg.token);
-        localStorage.setItem("token-init-date", new Date().getTime());
-        dispatch(onLogin({ name: response.msg.name, uid: response.msg.uid }));
-      }
-    } catch (error) {
+    const request = await fetch(`${import.meta.env.VITE_API_URL}/auth/renew`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        "jwt-token": token,
+      },
+    });
+    if (request.status === 200) {
+      const response = await request.json();
+      localStorage.setItem("jwt-token", response.msg.token);
+      localStorage.setItem("token-init-date", new Date().getTime());
+      dispatch(onLogin({ name: response.msg.name, uid: response.msg.uid }));
+    } else {
       localStorage.clear();
       dispatch(onLogout());
     }
