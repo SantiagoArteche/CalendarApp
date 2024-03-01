@@ -1,9 +1,9 @@
 export const CalendarEvent = ({ event }) => {
   const { title, user } = !!event && event;
   return (
-    <div>
+    <>
       <strong>{title}</strong>
-      <span> - {user?.name}</span>
-    </div>
+      <span className="ms-1"> - {user?.name}</span>
+    </>
   );
 };

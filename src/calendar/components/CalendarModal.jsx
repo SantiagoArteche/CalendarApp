@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { addHours } from "date-fns";
+import { addHours, differenceInSeconds } from "date-fns";
 import Modal from "react-modal";
 import { useFormik } from "formik";
 import DatePicker from "react-datepicker";
@@ -44,9 +44,6 @@ export const CalendarModal = () => {
     },
     validateOnChange: false,
     onSubmit: async (values) => {
-      if (values.title !== "")
-        Swal.fire("Well done!", "Event appointed!", "success");
-
       setErrorDate(false);
 
       await startSavingEvent(values);
@@ -88,8 +85,9 @@ export const CalendarModal = () => {
 
   const onDeleteEvent = () => {
     startDeletingEvent();
-    closeDateModal();
-    Swal.fire("Event deleted!", "Your event was removed", "success");
+    setTimeout(() => {
+      closeDateModal();
+    }, 400);
   };
   return (
     <Modal
@@ -102,7 +100,7 @@ export const CalendarModal = () => {
     >
       <div className="d-flex justify-content-between">
         <h1>New event</h1>
-        {activeEvent?._id && (
+        {activeEvent?.id && (
           <button
             onClick={onDeleteEvent}
             className="btn btn-outline-danger btn-block p-1 d-flex align-items-center "
@@ -127,9 +125,15 @@ export const CalendarModal = () => {
             className={`form-control ${errors?.end && "is-invalid"}`}
             dateFormat="Pp"
             showTimeSelect
+            required
           />
         </div>
-
+        {errors?.start && (
+          <div className="rounded-2 p-1 fs-6 mt-1  d-flex align-items-center gap-2">
+            <i className="fa-solid fa-circle-exclamation text-danger"></i>
+            <div className="text-danger">{errors.start}</div>
+          </div>
+        )}
         <div className="form-group mb-2 d-flex flex-column">
           <label className="me-1">Day and end hour</label>
           <DatePicker
@@ -142,6 +146,7 @@ export const CalendarModal = () => {
             className={`form-control ${errors?.end && "is-invalid"}`}
             dateFormat="Pp"
             showTimeSelect
+            required
           />
         </div>
         {errors?.end && (
