@@ -59,7 +59,7 @@ export const useAuthStore = () => {
       );
       Swal.fire("Well done!", "User created", "success");
     } else {
-      dispatch(onLogout("Error in register"));
+      dispatch(onLogout("Error in register, email already in use"));
       setTimeout(() => {
         dispatch(clearErrorMessage());
       }, 10);
