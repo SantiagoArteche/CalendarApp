@@ -1,11 +1,13 @@
 import { useFormik } from "formik";
 import "./LoginPage.css";
 import { useAuthStore } from "../../hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import * as Yup from "yup";
 export const LoginPage = () => {
   const { startLogin, errorMessage, startRegister } = useAuthStore();
+  const [counter, setCounter] = useState(0);
+
   const { handleChange, handleSubmit, values, resetForm, errors } = useFormik({
     initialValues: {
       loginPassword: "",
@@ -60,6 +62,12 @@ export const LoginPage = () => {
       ),
     }),
   });
+
+  useEffect(() => {
+    if (errorMessage !== undefined) {
+      Swal.fire("Error in auth", errorMessage, "error");
+    }
+  }, [errorMessage]);
 
   return (
     <div className="container login-container">

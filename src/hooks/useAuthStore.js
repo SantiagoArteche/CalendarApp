@@ -68,7 +68,8 @@ export const useAuthStore = () => {
 
   const checkAuthToken = async () => {
     const token = localStorage.getItem("jwt-token");
-    if (!token) return dispatch(onLogout("Token expired"));
+
+    if (!token) return dispatch(onLogout());
 
     const request = await fetch(`${import.meta.env.VITE_API_URL}/auth/renew`, {
       method: "GET",
