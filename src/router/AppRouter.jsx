@@ -11,6 +11,7 @@ export const AppRouter = () => {
   useEffect(() => {
     checkAuthToken();
   }, []);
+
   if (status === "checking") {
     return (
       <div
@@ -21,6 +22,7 @@ export const AppRouter = () => {
       </div>
     );
   }
+
   return (
     <Routes>
       {status === "not-authenticated" ? (

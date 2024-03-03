@@ -61,12 +61,6 @@ export const LoginPage = () => {
     }),
   });
 
-  useEffect(() => {
-    if (errorMessage !== undefined) {
-      Swal.fire("Error in auth", errorMessage, "error");
-    }
-  }, [errorMessage]);
-
   return (
     <div className="container login-container">
       <div className="row">
