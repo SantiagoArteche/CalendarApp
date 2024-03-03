@@ -42,7 +42,9 @@ export const useCalendarStore = () => {
           })
         );
       } else {
-        Swal.fire("Error updating", "", "error");
+        const response = await request.json();
+
+        Swal.fire("Error updating", response.msg, "error");
       }
     } else {
       const request = await fetch(`${import.meta.env.VITE_API_URL}/events`, {
@@ -64,7 +66,8 @@ export const useCalendarStore = () => {
           })
         );
       } else {
-        Swal.fire("Error creating new event", "", "error");
+        const response = await request.json();
+        Swal.fire("Error creating new event", response.msg, "error");
       }
     }
   };
@@ -84,7 +87,8 @@ export const useCalendarStore = () => {
       dispatch(onDeleteEvent());
       Swal.fire("Event deleted!", "Your event was removed", "success");
     } else {
-      Swal.fire("Error", "You can´t privileges", "error");
+      const response = await request.json();
+      Swal.fire("Error", response.msg, "error");
     }
   };
 

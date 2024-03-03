@@ -29,7 +29,8 @@ export const useAuthStore = () => {
         onLogin({ name: response.payload.name, uid: response.payload._id })
       );
     } else {
-      dispatch(onLogout("Incorrect credentials"));
+      const response = await request.json();
+      dispatch(onLogout(response.msg));
       setTimeout(() => {
         dispatch(clearErrorMessage());
       }, 10);
@@ -59,7 +60,8 @@ export const useAuthStore = () => {
       );
       Swal.fire("Well done!", "User created", "success");
     } else {
-      dispatch(onLogout("Error in register, email already in use"));
+      const response = await request.json();
+      dispatch(onLogout(response.msg));
       setTimeout(() => {
         dispatch(clearErrorMessage());
       }, 10);
