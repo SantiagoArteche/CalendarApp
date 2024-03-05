@@ -46,6 +46,14 @@ export const LoginPage = () => {
         Swal.fire("Error in register", "Passwords are not equal", "error");
         return;
       }
+      if (data.registerPassword.length < 6) {
+        Swal.fire(
+          "Error in register",
+          "Passwords should have at least 6 characters",
+          "error"
+        );
+        return;
+      }
       startRegister({
         email: data.registerEmail,
         name: data.name,
